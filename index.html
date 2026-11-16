@@ -77,7 +77,8 @@
     border: 1px solid var(--ink);
   }
   .btn-solid { background: var(--ink); color: var(--paper); }
-  .btn-solid:hover { background: var(--pine-dark); border-color: var(--pine-dark); color: var(--paper); }
+  .btn[disabled] { opacity: 0.5; cursor: default; }
+  .btn-solid:hover:not([disabled]) { background: var(--pine-dark); border-color: var(--pine-dark); color: var(--paper); }
   .btn-line { background: transparent; color: var(--ink); }
   .btn-line:hover { background: var(--sand); color: var(--ink); }
   .hero-status { margin-top: 28px; font-size: 15px; color: var(--muted); display: flex; align-items: center; gap: 10px; }
@@ -148,6 +149,56 @@
   .contact-links { margin-top: 24px; display: flex; flex-wrap: wrap; gap: 24px; font-weight: 500; }
   .fine { margin-top: 72px; font-size: 14px; color: var(--muted); }
 
+  /* Video previews */
+  .stage { position: relative; }
+  .sound-btn {
+    position: absolute; left: 14px; bottom: 14px;
+    display: inline-flex; align-items: center; gap: 8px;
+    font: inherit; font-size: 14px; font-weight: 600; cursor: pointer;
+    padding: 9px 16px 9px 13px; border-radius: 999px; border: 0;
+    background: rgba(250, 246, 238, 0.95); color: var(--ink);
+    box-shadow: 0 2px 10px rgba(38, 34, 29, 0.25);
+  }
+  .sound-btn::before { content: ""; border-left: 9px solid var(--ink); border-top: 6px solid transparent; border-bottom: 6px solid transparent; }
+  .sound-btn:hover { background: #fff; }
+  .sound-btn[hidden] { display: none; }
+
+  /* Nav: current section */
+  .site-nav a[aria-current="true"] { color: var(--pine); box-shadow: 0 2px 0 var(--pine); }
+
+  /* Message pipeline replay */
+  .replay { grid-column: 1 / -1; background: var(--sand); border: 1px solid var(--line); border-radius: 14px; padding: 32px; }
+  .replay-head { display: flex; gap: 32px; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; }
+  .replay-head h4 { margin: 0; font-size: 22px; letter-spacing: -0.02em; font-weight: 600; }
+  .replay-head p { margin-top: 8px; max-width: 40em; font-size: 16px; color: var(--muted); }
+  .replay-grid { margin-top: 28px; display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr) minmax(0, 1fr); gap: 16px; }
+  .lane { background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; min-height: 330px; }
+  .lane h5 { margin: 0 0 12px; font-size: 14px; font-weight: 600; }
+  .lane-empty { font-size: 14px; color: var(--muted); }
+  .events { display: grid; gap: 6px; font-size: 13px; line-height: 1.4; }
+  .events li { padding: 6px 10px; border-radius: 8px; border: 1px solid var(--line); background: #FFFDF8; }
+  .events li span { color: var(--muted); }
+  .chat { display: flex; flex-direction: column; gap: 8px; }
+  .bubble { max-width: 88%; padding: 8px 12px; border-radius: 14px; font-size: 14px; line-height: 1.4; }
+  .bubble small { display: block; font-size: 12px; opacity: 0.7; margin-bottom: 1px; }
+  .bubble.student { align-self: flex-end; background: var(--ink); color: var(--paper); border-bottom-right-radius: 4px; }
+  .bubble.patient { align-self: flex-start; background: #fff; border: 1px solid var(--line); border-bottom-left-radius: 4px; }
+  .held { margin-bottom: 12px; padding: 10px 12px; border: 1px dashed #BFB198; border-radius: 10px; font-size: 13px; color: var(--muted); }
+  .held b { color: var(--ink); font-weight: 600; }
+  .verdict { margin-top: auto; padding-top: 14px; font-size: 14px; font-weight: 600; min-height: 2.6em; }
+  .verdict.bad { color: #96472B; }
+  .verdict.good { color: var(--pine); }
+  @media (prefers-reduced-motion: no-preference) {
+    .events li, .bubble { animation: pop 0.28s ease-out both; }
+    @keyframes pop { from { opacity: 0; transform: translateY(6px); } }
+    .hero h1, .hero-lede, .hero-actions, .hero-status, .portrait { animation: rise 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+    .hero-lede { animation-delay: 0.12s; }
+    .hero-actions { animation-delay: 0.22s; }
+    .hero-status { animation-delay: 0.3s; }
+    .portrait { animation-delay: 0.18s; }
+    @keyframes rise { from { opacity: 0; transform: translateY(18px); } }
+  }
+
   @media (max-width: 880px) {
     body { font-size: 16px; }
     .site-nav a:not(.nav-resume) { display: none; }
@@ -158,6 +209,10 @@
     .section { padding: 64px 0; }
     .case { margin-top: 44px; gap: 24px; }
     .player { position: static; }
+    .replay { padding: 20px; }
+    .replay-grid { grid-template-columns: minmax(0, 1fr); }
+    .lane { min-height: 0; }
+    .verdict { margin-top: 12px; }
     .case + .case { padding-top: 44px; }
     .project, .role { grid-template-columns: minmax(0, 1fr); gap: 8px; }
     .contact { padding: 64px 0 40px; }
@@ -211,7 +266,7 @@
 
       <article class="case">
         <div class="player">
-          <video controls preload="none" poster="assets/poster-agent.jpg" src="assets/kato-report-agent.mp4" aria-label="Kato Report Agent demo"></video>
+          <div class="stage"><video controls preload="none" poster="assets/poster-agent.jpg" src="assets/kato-report-agent.mp4" aria-label="Kato Report Agent demo"></video><button type="button" class="sound-btn" hidden>Play with sound</button></div>
           <p class="player-note">Demo: asking the agent about student engagement data (1:03)</p>
         </div>
         <div>
@@ -234,7 +289,7 @@
 
       <article class="case">
         <div class="player" data-switch>
-          <video controls preload="none" poster="assets/poster-film.jpg" src="assets/mr-kato-film.mp4" aria-label="Mr. Kato video"></video>
+          <div class="stage"><video controls preload="none" poster="assets/poster-film.jpg" src="assets/mr-kato-film.mp4" aria-label="Mr. Kato video"></video><button type="button" class="sound-btn" hidden>Play with sound</button></div>
           <div class="player-tabs" role="group" aria-label="Choose a video">
             <button type="button" aria-pressed="true" data-src="assets/mr-kato-film.mp4" data-poster="assets/poster-film.jpg">Short film (1:30)</button>
             <button type="button" aria-pressed="false" data-src="assets/mr-kato-demo.mp4" data-poster="assets/poster-demo.jpg">Product walk-through (6:47)</button>
@@ -256,11 +311,38 @@
             <li>TypeScript</li><li>React</li><li>WebRTC</li><li>OpenAI Realtime API</li><li>Zustand</li><li>Vite</li>
           </ul>
         </div>
+        <div class="replay" id="replay">
+          <div class="replay-head">
+            <div>
+              <h4>Replay the bug I fixed</h4>
+              <p>In a live voice conversation, the patient's reply can reach the browser before the student's own words finish transcribing, and the same reply can arrive twice. This is a simplified replay of what that did to the transcript, and what my message pipeline does instead.</p>
+            </div>
+            <button type="button" class="btn btn-solid" id="replay-run">Send a turn</button>
+          </div>
+          <div class="replay-grid">
+            <div class="lane">
+              <h5>Events arriving from the server</h5>
+              <ol class="events" id="rp-events" aria-live="polite"></ol>
+              <p class="lane-empty" id="rp-empty">Press "Send a turn" to start.</p>
+            </div>
+            <div class="lane">
+              <h5>Without the pipeline</h5>
+              <div class="chat" id="rp-naive"></div>
+              <p class="verdict bad" id="rp-naive-verdict"></p>
+            </div>
+            <div class="lane">
+              <h5>With the pipeline</h5>
+              <p class="held" id="rp-held">Buffer: empty</p>
+              <div class="chat" id="rp-fixed"></div>
+              <p class="verdict good" id="rp-fixed-verdict"></p>
+            </div>
+          </div>
+        </div>
       </article>
 
       <article class="case">
         <div class="player">
-          <video controls preload="none" poster="assets/poster-payroll.jpg" src="assets/payroll-demo.mp4" aria-label="Payroll and time-tracking system demo"></video>
+          <div class="stage"><video controls preload="none" poster="assets/poster-payroll.jpg" src="assets/payroll-demo.mp4" aria-label="Payroll and time-tracking system demo"></video><button type="button" class="sound-btn" hidden>Play with sound</button></div>
           <p class="player-note">Demo with test accounts: check-in, admin panel and report export (0:52)</p>
         </div>
         <div>
@@ -416,6 +498,59 @@
 </footer>
 
 <script>
+(function () {
+  var videos = Array.prototype.slice.call(document.querySelectorAll('video'));
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var saveData = navigator.connection && navigator.connection.saveData;
+  var canPreview = !reduced && !saveData && 'IntersectionObserver' in window;
+
+  function fullPlaying() {
+    return videos.some(function (v) { return v.dataset.mode === 'full' && !v.paused; });
+  }
+  function soundButton(v) { return v.parentNode.querySelector('.sound-btn'); }
+
+  // Preview mode: a silent loop that plays while the video is on screen.
+  function setPreview(v) {
+    v.dataset.mode = 'preview';
+    v.controls = false; v.muted = true; v.loop = true; v.playsInline = true;
+    soundButton(v).hidden = false;
+  }
+  function setFull(v) {
+    v.dataset.mode = 'full';
+    v.loop = false; v.muted = false; v.controls = true;
+    soundButton(v).hidden = true;
+    v.currentTime = 0;
+    v.play();
+  }
+  function tryPreview(v) {
+    if (v.dataset.mode === 'preview' && v.dataset.visible === '1' && !fullPlaying()) {
+      var p = v.play(); if (p && p.catch) p.catch(function () {});
+    }
+  }
+
+  if (canPreview) {
+    var watcher = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        var v = entry.target;
+        v.dataset.visible = entry.isIntersecting ? '1' : '0';
+        if (entry.isIntersecting) tryPreview(v); else v.pause();
+      });
+    }, { threshold: 0.6 });
+    videos.forEach(function (v) {
+      setPreview(v);
+      watcher.observe(v);
+      soundButton(v).addEventListener('click', function () { setFull(v); });
+    });
+  }
+
+  // Only one video plays with sound at a time.
+  videos.forEach(function (v) {
+    v.addEventListener('play', function () {
+      if (v.dataset.mode === 'preview') return;
+      videos.forEach(function (other) { if (other !== v) other.pause(); });
+    });
+  });
+
   // Swap between the two Mr. Kato videos.
   document.querySelectorAll('[data-switch]').forEach(function (player) {
     var video = player.querySelector('video');
@@ -428,16 +563,123 @@
         video.poster = button.dataset.poster;
         video.src = button.dataset.src;
         video.load();
+        if (canPreview) { setPreview(video); tryPreview(video); }
       });
     });
   });
-  // Only one video plays at a time.
-  var videos = document.querySelectorAll('video');
-  videos.forEach(function (v) {
-    v.addEventListener('play', function () {
-      videos.forEach(function (other) { if (other !== v) other.pause(); });
+
+  // Highlight the current section in the nav.
+  if ('IntersectionObserver' in window) {
+    var links = {};
+    document.querySelectorAll('.site-nav a[href^="#"]').forEach(function (a) { links[a.getAttribute('href').slice(1)] = a; });
+    var owner = { work: 'work', projects: 'work', experience: 'experience', about: 'about', contact: 'contact' };
+    var spy = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        Object.keys(links).forEach(function (id) { links[id].removeAttribute('aria-current'); });
+        var link = links[owner[entry.target.id]];
+        if (link) link.setAttribute('aria-current', 'true');
+      });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    Object.keys(owner).forEach(function (id) { var el = document.getElementById(id); if (el) spy.observe(el); });
+  }
+
+  // Message pipeline replay.
+  var turns = [
+    { question: 'What brings you in today?',
+      events: [
+        { type: 'speech', label: 'Student starts speaking' },
+        { type: 'reply', id: 'resp_01', text: 'I have had a pain in my chest since this morning.' },
+        { type: 'reply', id: 'resp_01', text: 'I have had a pain in my chest since this morning.' },
+        { type: 'final', label: 'Student transcript is final' }
+      ] },
+    { question: 'Does the pain spread anywhere?',
+      events: [
+        { type: 'speech', label: 'Student starts speaking' },
+        { type: 'reply', id: 'resp_02', text: 'It goes down my left arm.' },
+        { type: 'reply', id: 'resp_03', text: 'I also feel short of breath.' },
+        { type: 'reply', id: 'resp_02', text: 'It goes down my left arm.' },
+        { type: 'final', label: 'Student transcript is final' }
+      ] }
+  ];
+  var runBtn = document.getElementById('replay-run');
+  if (runBtn) {
+    var elEvents = document.getElementById('rp-events');
+    var elEmpty = document.getElementById('rp-empty');
+    var elNaive = document.getElementById('rp-naive');
+    var elFixed = document.getElementById('rp-fixed');
+    var elHeld = document.getElementById('rp-held');
+    var elNaiveVerdict = document.getElementById('rp-naive-verdict');
+    var elFixedVerdict = document.getElementById('rp-fixed-verdict');
+    var turnIndex = 0;
+    var stepDelay = reduced ? 350 : 900;
+
+    function bubble(parent, who, text) {
+      var div = document.createElement('div');
+      div.className = 'bubble ' + who;
+      var label = document.createElement('small');
+      label.textContent = who === 'student' ? 'Student' : 'Patient';
+      div.appendChild(label);
+      div.appendChild(document.createTextNode(text));
+      parent.appendChild(div);
+    }
+    function logEvent(html) {
+      var li = document.createElement('li');
+      li.innerHTML = html;
+      elEvents.appendChild(li);
+    }
+    function showHeld(buffer) {
+      if (!buffer.length) { elHeld.textContent = 'Buffer: empty'; return; }
+      elHeld.innerHTML = 'Buffer: holding <b>' + buffer.map(function (m) { return m.id; }).join(', ') + '</b> until the student turn is final';
+    }
+    function clearAll() {
+      elEvents.innerHTML = ''; elNaive.innerHTML = ''; elFixed.innerHTML = '';
+      elNaiveVerdict.textContent = ''; elFixedVerdict.textContent = '';
+      showHeld([]);
+    }
+
+    function runTurn(turn, done) {
+      var buffer = [];   // replies held back by the pipeline
+      var seen = {};     // response IDs already accepted
+      var i = 0;
+      (function next() {
+        if (i >= turn.events.length) { done(); return; }
+        var e = turn.events[i++];
+        if (e.type === 'speech') {
+          logEvent(e.label);
+        } else if (e.type === 'reply') {
+          var duplicate = !!seen[e.id];
+          logEvent('Patient reply <span>' + e.id + (duplicate ? ', sent again' : '') + '</span>');
+          bubble(elNaive, 'patient', e.text);               // naive: show on arrival
+          if (!duplicate) { seen[e.id] = true; buffer.push(e); }   // pipeline: dedupe, then hold
+          showHeld(buffer);
+        } else if (e.type === 'final') {
+          logEvent(e.label);
+          bubble(elNaive, 'student', turn.question);
+          bubble(elFixed, 'student', turn.question);       // pipeline: question first
+          buffer.forEach(function (m) { bubble(elFixed, 'patient', m.text); });   // then flush in arrival order
+          buffer = [];
+          showHeld(buffer);
+        }
+        setTimeout(next, stepDelay);
+      })();
+    }
+
+    runBtn.addEventListener('click', function () {
+      if (turnIndex === 0) clearAll();
+      elEmpty.hidden = true;
+      runBtn.disabled = true;
+      runTurn(turns[turnIndex], function () {
+        turnIndex += 1;
+        elNaiveVerdict.textContent = 'Replies show up before the question, and one shows up twice.';
+        elFixedVerdict.textContent = 'Question first, each reply once, in the order it arrived.';
+        runBtn.disabled = false;
+        if (turnIndex >= turns.length) { turnIndex = 0; runBtn.textContent = 'Start over'; }
+        else { runBtn.textContent = 'Send another turn'; }
+      });
     });
-  });
+  }
+})();
 </script>
 </body>
 </html>
