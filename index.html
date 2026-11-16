@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Linus Lim | AI and full-stack developer</title>
+<meta name="description" content="Linus Lim builds AI tools and the full-stack software around them. Computer engineering at UBC, open to full-time roles from June 2027.">
+<meta property="og:title" content="Linus Lim | AI and full-stack developer">
+<meta property="og:description" content="AI agents, real-time voice, and production software. Computer engineering at UBC.">
+<meta property="og:image" content="assets/poster-film.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #FAF6EE;
+    --sand: #F1E9DA;
+    --line: #E2D8C5;
+    --ink: #26221D;
+    --muted: #6B6358;
+    --pine: #2E5A4C;
+    --pine-dark: #21443A;
+    --wrap: 1120px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
+    font-size: 17px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  img, video { display: block; max-width: 100%; }
+  a { color: var(--pine); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  a:hover { color: var(--pine-dark); }
+  a:focus-visible, button:focus-visible, video:focus-visible {
+    outline: 2px solid var(--pine); outline-offset: 3px; border-radius: 4px;
+  }
+  h1, h2, h3, p, ul, ol, dl, dd, figure { margin: 0; padding: 0; }
+  ul, ol { list-style: none; }
+  .wrap { width: 100%; max-width: var(--wrap); margin: 0 auto; padding: 0 28px; }
+
+  /* Header */
+  .site-head {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(250, 246, 238, 0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .site-head .wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+  .brand { font-weight: 700; font-size: 18px; color: var(--ink); text-decoration: none; letter-spacing: -0.01em; }
+  .site-nav { display: flex; gap: 28px; align-items: center; }
+  .site-nav a { color: var(--ink); text-decoration: none; font-size: 15px; font-weight: 500; }
+  .site-nav a:hover { color: var(--pine); }
+  .site-nav .nav-resume { border: 1px solid var(--ink); padding: 7px 14px; border-radius: 999px; }
+  .site-nav .nav-resume:hover { background: var(--ink); color: var(--paper); }
+
+  /* Hero */
+  .hero { padding: 88px 0 96px; }
+  .hero-grid { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: 72px; align-items: center; }
+  .hero h1 {
+    font-size: clamp(40px, 5.6vw, 68px);
+    line-height: 1.04;
+    letter-spacing: -0.035em;
+    font-weight: 600;
+    max-width: 13em;
+  }
+  .hero-lede { margin-top: 28px; font-size: 20px; line-height: 1.55; color: var(--muted); max-width: 34em; }
+  .hero-lede strong { color: var(--ink); font-weight: 600; }
+  .hero-actions { margin-top: 36px; display: flex; flex-wrap: wrap; gap: 12px; }
+  .btn {
+    display: inline-block; padding: 13px 22px; border-radius: 999px;
+    font: inherit; font-size: 16px; font-weight: 600; text-decoration: none; cursor: pointer;
+    border: 1px solid var(--ink);
+  }
+  .btn-solid { background: var(--ink); color: var(--paper); }
+  .btn-solid:hover { background: var(--pine-dark); border-color: var(--pine-dark); color: var(--paper); }
+  .btn-line { background: transparent; color: var(--ink); }
+  .btn-line:hover { background: var(--sand); color: var(--ink); }
+  .hero-status { margin-top: 28px; font-size: 15px; color: var(--muted); display: flex; align-items: center; gap: 10px; }
+  .hero-status::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--pine); flex: none; }
+  .portrait { position: relative; justify-self: end; width: 100%; max-width: 340px; }
+  .portrait-frame { position: relative; }
+  .portrait-frame::before {
+    content: ""; position: absolute; inset: 22px -22px -22px 22px;
+    background: var(--sand); border-radius: 18px;
+  }
+  .portrait img { position: relative; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 30%; border-radius: 18px; }
+  .portrait figcaption { position: relative; margin-top: 38px; font-size: 14px; color: var(--muted); }
+
+  /* Sections */
+  .section { padding: 88px 0; border-top: 1px solid var(--line); }
+  .section-title { font-size: clamp(28px, 3.4vw, 40px); letter-spacing: -0.03em; line-height: 1.1; font-weight: 600; }
+  .section-intro { margin-top: 14px; color: var(--muted); max-width: 40em; }
+
+  /* Case studies */
+  .case { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 48px; margin-top: 64px; align-items: start; }
+  .case + .case { padding-top: 64px; border-top: 1px solid var(--line); }
+  .player { position: sticky; top: 92px; background: var(--sand); border-radius: 14px; overflow: hidden; border: 1px solid var(--line); }
+  .player video { width: 100%; aspect-ratio: 16 / 9; background: #000; object-fit: contain; }
+  .player-tabs { display: flex; gap: 8px; padding: 10px; }
+  .player-tabs button {
+    font: inherit; font-size: 14px; font-weight: 500; cursor: pointer;
+    padding: 7px 14px; border-radius: 999px; border: 1px solid transparent; background: transparent; color: var(--ink);
+  }
+  .player-tabs button[aria-pressed="true"] { background: var(--paper); border-color: var(--line); font-weight: 600; }
+  .player-note { padding: 10px 16px 12px; font-size: 14px; color: var(--muted); }
+  .case-role { font-size: 15px; color: var(--muted); }
+  .case h3 { margin-top: 6px; font-size: 28px; line-height: 1.15; letter-spacing: -0.025em; font-weight: 600; }
+  .case-summary { margin-top: 14px; }
+  .case-points { margin-top: 18px; display: grid; gap: 12px; }
+  .case-points li { padding-left: 18px; position: relative; font-size: 16px; line-height: 1.55; }
+  .case-points li::before { content: ""; position: absolute; left: 0; top: 0.68em; width: 7px; height: 1.5px; background: var(--pine); }
+  .tags { margin-top: 22px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .tags li { font-size: 13px; padding: 3px 10px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); background: #FFFDF8; }
+
+  /* More projects */
+  .projects { margin-top: 40px; border-top: 1px solid var(--line); }
+  .project { display: grid; grid-template-columns: 240px minmax(0, 1fr) auto; gap: 32px; padding: 26px 0; border-bottom: 1px solid var(--line); align-items: baseline; }
+  .project h3 { font-size: 19px; font-weight: 600; letter-spacing: -0.01em; }
+  .project .stack { font-size: 14px; color: var(--muted); margin-top: 4px; }
+  .project p { font-size: 16px; max-width: 38em; }
+  .project a { font-size: 15px; font-weight: 600; white-space: nowrap; }
+
+  /* Experience */
+  .roles { margin-top: 40px; }
+  .role { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 32px; padding: 24px 0; border-top: 1px solid var(--line); }
+  .role time { font-size: 15px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .role h3 { font-size: 19px; font-weight: 600; letter-spacing: -0.01em; }
+  .role .org { color: var(--muted); font-size: 15px; margin-top: 2px; }
+  .role p { margin-top: 10px; font-size: 16px; max-width: 40em; }
+
+  /* Skills + about */
+  .two-col { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 72px; }
+  .skills { margin-top: 32px; display: grid; gap: 18px; }
+  .skills dt { font-weight: 600; font-size: 15px; }
+  .skills dd { color: var(--muted); font-size: 16px; }
+  .about p { margin-top: 20px; max-width: 32em; }
+  .about p:first-of-type { margin-top: 32px; }
+
+  /* Contact */
+  .contact { background: var(--sand); border-top: 1px solid var(--line); padding: 88px 0 56px; }
+  .contact h2 { font-size: clamp(32px, 4.6vw, 56px); letter-spacing: -0.035em; line-height: 1.05; font-weight: 600; max-width: 14em; }
+  .contact-mail { display: inline-block; margin-top: 28px; font-size: clamp(20px, 2.6vw, 28px); font-weight: 600; color: var(--ink); }
+  .contact-links { margin-top: 24px; display: flex; flex-wrap: wrap; gap: 24px; font-weight: 500; }
+  .fine { margin-top: 72px; font-size: 14px; color: var(--muted); }
+
+  @media (max-width: 880px) {
+    body { font-size: 16px; }
+    .site-nav a:not(.nav-resume) { display: none; }
+    .hero { padding: 56px 0 64px; }
+    .hero-grid, .case, .two-col { grid-template-columns: minmax(0, 1fr); gap: 40px; }
+    .portrait { justify-self: start; max-width: 260px; margin-right: 22px; }
+    .hero-lede { font-size: 18px; }
+    .section { padding: 64px 0; }
+    .case { margin-top: 44px; gap: 24px; }
+    .player { position: static; }
+    .case + .case { padding-top: 44px; }
+    .project, .role { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+    .contact { padding: 64px 0 40px; }
+  }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="#top">Linus Lim</a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="#work">Work</a>
+      <a href="#experience">Experience</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+      <a class="nav-resume" href="assets/Linus_Lim_Resume.pdf" target="_blank" rel="noopener">Resume</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <h1>I build AI tools and the full-stack software around them.</h1>
+        <p class="hero-lede">
+          I'm Linus, a computer engineering student at UBC. Most recently I was an
+          <strong>AI R&amp;D engineer at UBC Faculty of Medicine</strong>, shipping a retrieval and tool-using agent end to end.
+          Before that I built the real-time voice layer of <strong>Mr.&nbsp;Kato</strong>, a clinical training tool used by 300+ medical students.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-solid" href="#work">See the work</a>
+          <a class="btn btn-line" href="assets/Linus_Lim_Resume.pdf" target="_blank" rel="noopener">Download resume</a>
+        </div>
+        <p class="hero-status">Open to full-time roles from June 2027</p>
+      </div>
+      <figure class="portrait">
+        <div class="portrait-frame"><img src="assets/linus.jpg" alt="Portrait of Linus Lim" width="711" height="1024"></div>
+        <figcaption>Vancouver, BC. Originally from Penang, Malaysia.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section" id="work">
+    <div class="wrap">
+      <h2 class="section-title">Selected work</h2>
+      <p class="section-intro">Three projects that shipped to real users, each with a demo you can watch.</p>
+
+      <article class="case">
+        <div class="player">
+          <video controls preload="none" poster="assets/poster-agent.jpg" src="assets/kato-report-agent.mp4" aria-label="Kato Report Agent demo"></video>
+          <p class="player-note">Demo: asking the agent about student engagement data (1:03)</p>
+        </div>
+        <div>
+          <p class="case-role">UBC Faculty of Medicine, AI R&amp;D Engineer, 2026</p>
+          <h3>Kato Report Agent</h3>
+          <p class="case-summary">
+            A chatbot that lets analysts ask questions about engagement data for 300+ users in plain language,
+            built during a four-month investigation of Azure AI Foundry.
+          </p>
+          <ul class="case-points">
+            <li>Shipped the feature end to end: Python services on Azure Functions, a custom MCP server exposing tools to agents over a two-way SSE connection, and the React interface.</li>
+            <li>Built the retrieval pipeline with hybrid vector and keyword indexing, plus the evaluation framework (JSONL benchmarks for groundedness, relevance, retrieval and completeness) that proved it worked before release.</li>
+            <li>Cut per-run evaluation cost by about 99% (CA$13.50 a day to CA$0.03 a run) and running infrastructure to about CA$2 a day with scale-to-zero functions.</li>
+          </ul>
+          <ul class="tags">
+            <li>Python</li><li>Azure Functions</li><li>RAG</li><li>MCP</li><li>Azure AI Search</li><li>React</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="case">
+        <div class="player" data-switch>
+          <video controls preload="none" poster="assets/poster-film.jpg" src="assets/mr-kato-film.mp4" aria-label="Mr. Kato video"></video>
+          <div class="player-tabs" role="group" aria-label="Choose a video">
+            <button type="button" aria-pressed="true" data-src="assets/mr-kato-film.mp4" data-poster="assets/poster-film.jpg">Short film (1:30)</button>
+            <button type="button" aria-pressed="false" data-src="assets/mr-kato-demo.mp4" data-poster="assets/poster-demo.jpg">Product walk-through (6:47)</button>
+          </div>
+        </div>
+        <div>
+          <p class="case-role">UBC Faculty of Medicine, Software Developer Co-op, 2025 to 2026</p>
+          <h3>Mr. Kato</h3>
+          <p class="case-summary">
+            A web-based virtual patient that medical students interview by voice or text, then debrief with an AI preceptor.
+            Used by 300+ medical students.
+          </p>
+          <ul class="case-points">
+            <li>Engineered the WebRTC service layer for live voice conversations with the patient.</li>
+            <li>Traced a transcript bug to its root cause, concurrent messages arriving out of order, and fixed it with a pipeline that buffers until the user's turn is final, deduplicates on server response ID, and flushes in arrival order.</li>
+            <li>Migrated the frontend from JavaScript to TypeScript, added Zustand state management and a pub/sub event bus, and modularised components for reuse.</li>
+          </ul>
+          <ul class="tags">
+            <li>TypeScript</li><li>React</li><li>WebRTC</li><li>OpenAI Realtime API</li><li>Zustand</li><li>Vite</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="case">
+        <div class="player">
+          <video controls preload="none" poster="assets/poster-payroll.jpg" src="assets/payroll-demo.mp4" aria-label="Payroll and time-tracking system demo"></video>
+          <p class="player-note">Demo with test accounts: check-in, admin panel and report export (0:52)</p>
+        </div>
+        <div>
+          <p class="case-role">Freelance, Full-Stack Developer, 2025 to 2026</p>
+          <h3>Payroll and time-tracking system</h3>
+          <p class="case-summary">
+            A production desktop app for a daycare business with 3 branches and about 100 staff.
+            Staff check in and out; administrators export payroll reports to Excel.
+          </p>
+          <ul class="case-points">
+            <li>Built and shipped it: React in an Electron shell, Node.js, Express and MongoDB behind it, packaged as a cross-platform installer.</li>
+            <li>Designed the data model and payroll engine (accrued time off, closing pay, transit bonuses, sick leave, vacation) with time-rounding logic and an auto-checkout safeguard for sessions over 8 hours.</li>
+            <li>Owned the whole loop with a non-technical client: requirements, spec, prioritisation, and production support as real users surfaced edge cases.</li>
+          </ul>
+          <ul class="tags">
+            <li>Electron</li><li>React</li><li>Node.js</li><li>Express</li><li>MongoDB</li><li>ExcelJS</li>
+          </ul>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="section" id="projects">
+    <div class="wrap">
+      <h2 class="section-title">More projects</h2>
+      <div class="projects">
+        <article class="project">
+          <div>
+            <h3>FinanceAI</h3>
+            <p class="stack">React, Vite, TypeScript, Node.js, Express</p>
+          </div>
+          <p>A privacy-first finance assistant. It parses a bank CSV export, builds a per-session in-memory vector store, and answers questions in plain language. No database, and sessions expire after an hour. Custom tools cover category summaries, Z-score anomaly flagging, and spending projection against a savings goal.</p>
+          <a href="https://github.com/linus071/Finance-AI" target="_blank" rel="noopener">View code</a>
+        </article>
+        <article class="project">
+          <div>
+            <h3>UBC AgroBot</h3>
+            <p class="stack">C++, Python, ROS, Gazebo</p>
+          </div>
+          <p>Navigation and embedded systems on a student-built farming robot. Wrote autonomous navigation software using LiDAR, depth camera and IMU data, a crop-row detection algorithm on ZED depth maps, and a ROS pipeline feeding the motor controllers, tested in Gazebo simulation.</p>
+          <span></span>
+        </article>
+        <article class="project">
+          <div>
+            <h3>Mappost</h3>
+            <p class="stack">Node.js, Express, MongoDB, Azure, Jest</p>
+          </div>
+          <p>Backend for an Android geo-tagging app that placed 5th of 30 groups. Search uses a Trie for sub-500ms results, and the test suite reaches 100% branch coverage across 100+ REST endpoints.</p>
+          <a href="https://github.com/BINJIE-POTTER/CPEN321-MCLD_ALL_Nighters" target="_blank" rel="noopener">View code</a>
+        </article>
+        <article class="project">
+          <div>
+            <h3>Sports competition database</h3>
+            <p class="stack">SQL, Oracle, PHP</p>
+          </div>
+          <p>A relational database designed from ER diagrams, with a normalised schema and optimised queries for a 35% efficiency gain and 27% fewer data inconsistencies.</p>
+          <span></span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="experience">
+    <div class="wrap">
+      <h2 class="section-title">Experience</h2>
+      <ol class="roles">
+        <li class="role">
+          <time>Jan 2026 to Apr 2026</time>
+          <div>
+            <h3>AI Research &amp; Development Engineer</h3>
+            <p class="org">UBC Faculty of Medicine, Educational Technology (contract, part-time)</p>
+            <p>Evaluated Azure AI Foundry for institutional use and shipped the Kato Report Agent. Instrumented tracing and per-resource cost attribution, and kept data residency in Canada for regulatory compliance.</p>
+          </div>
+        </li>
+        <li class="role">
+          <time>Mar 2025 to Apr 2026</time>
+          <div>
+            <h3>Freelance Full-Stack Developer</h3>
+            <p class="org">Self-employed</p>
+            <p>Designed, built and supported a production payroll and time-tracking system for a multi-branch daycare business.</p>
+          </div>
+        </li>
+        <li class="role">
+          <time>Apr 2025 to Jan 2026</time>
+          <div>
+            <h3>Software Developer Co-op</h3>
+            <p class="org">UBC Faculty of Medicine, Educational Technology</p>
+            <p>Frontend and real-time voice work on Mr. Kato in an Agile team, with twice-weekly standups and pull request review before every merge to production.</p>
+          </div>
+        </li>
+        <li class="role">
+          <time>Jun 2024 to Sep 2025</time>
+          <div>
+            <h3>Navigation and Embedded Systems Engineer</h3>
+            <p class="org">UBC AgroBot Design Team</p>
+            <p>Autonomous navigation and crop-row detection for an agricultural robot.</p>
+          </div>
+        </li>
+        <li class="role">
+          <time>Sep 2024 to May 2025</time>
+          <div>
+            <h3>Learning Technology Rover (Co-op)</h3>
+            <p class="org">Arts ISIT, University of British Columbia</p>
+            <p>Wrote Python scripts with Pandas to prepare Workday data for Canvas course creation, and resolved 500+ support tickets for Canvas and LockDown Browser.</p>
+          </div>
+        </li>
+        <li class="role">
+          <time>Jun 2023 to Apr 2025</time>
+          <div>
+            <h3>Vice President and Back-End Developer</h3>
+            <p class="org">Edge-0304 Studio, a student startup</p>
+            <p>Led a team of 5 from 3 universities building smart-home gadgets and client websites, with Arduino hardware talking to a Node.js and Express backend on Google Cloud.</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" id="about">
+    <div class="wrap two-col">
+      <div class="about">
+        <h2 class="section-title">About</h2>
+        <p>I'm in my final year of computer engineering at the University of British Columbia, graduating in May 2027. I grew up in Penang, Malaysia, and I'm now based in Vancouver.</p>
+        <p>I like owning a feature from the first conversation with the person who needs it through to supporting it in production. I use Cursor and Claude Code every day, and I re-derive by hand any generated logic that affects correctness, cost or data handling.</p>
+        <p>Outside of software I coach boxing, which is good practice for explaining things simply and staying patient while someone learns.</p>
+      </div>
+      <div>
+        <h2 class="section-title">Skills</h2>
+        <dl class="skills">
+          <div><dt>Languages</dt><dd>TypeScript, JavaScript, Python, SQL, Java, C/C++, HTML/CSS</dd></div>
+          <div><dt>Frontend</dt><dd>React, Vite, Zustand, Electron, component architecture, responsive UI</dd></div>
+          <div><dt>Backend and data</dt><dd>Node.js, Express, Python on Azure Functions, REST APIs, SSE, MongoDB, Oracle</dd></div>
+          <div><dt>AI</dt><dd>RAG, MCP, LLM evaluation, OpenAI API, Cursor, Claude Code</dd></div>
+          <div><dt>Testing and workflow</dt><dd>Jest, Git with pull request review, Agile, Docker, Azure, GCP, Firebase</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="contact" id="contact">
+  <div class="wrap">
+    <h2>Hiring for 2027? I'd like to hear about it.</h2>
+    <a class="contact-mail" href="mailto:linuslim.LL81@gmail.com">linuslim.LL81@gmail.com</a>
+    <div class="contact-links">
+      <a href="https://linkedin.com/in/linus-lim-2b124a249/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/linus071" target="_blank" rel="noopener">GitHub</a>
+      <a href="assets/Linus_Lim_Resume.pdf" target="_blank" rel="noopener">Resume (PDF)</a>
+    </div>
+    <p class="fine">Linus Lim, Vancouver, BC</p>
+  </div>
+</footer>
+
+<script>
+  // Swap between the two Mr. Kato videos.
+  document.querySelectorAll('[data-switch]').forEach(function (player) {
+    var video = player.querySelector('video');
+    var buttons = player.querySelectorAll('button[data-src]');
+    buttons.forEach(function (button) {
+      button.addEventListener('click', function () {
+        if (button.getAttribute('aria-pressed') === 'true') return;
+        buttons.forEach(function (b) { b.setAttribute('aria-pressed', b === button ? 'true' : 'false'); });
+        video.pause();
+        video.poster = button.dataset.poster;
+        video.src = button.dataset.src;
+        video.load();
+      });
+    });
+  });
+  // Only one video plays at a time.
+  var videos = document.querySelectorAll('video');
+  videos.forEach(function (v) {
+    v.addEventListener('play', function () {
+      videos.forEach(function (other) { if (other !== v) other.pause(); });
+    });
+  });
+</script>
+</body>
+</html>
