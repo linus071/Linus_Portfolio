@@ -101,6 +101,7 @@
   .case { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 48px; margin-top: 64px; align-items: start; }
   .case + .case { padding-top: 64px; border-top: 1px solid var(--line); }
   .player { position: sticky; top: 92px; background: var(--sand); border-radius: 14px; overflow: hidden; border: 1px solid var(--line); }
+  .player-static { position: static; }
   .player video { width: 100%; aspect-ratio: 16 / 9; background: #000; object-fit: contain; }
   .player-tabs { display: flex; gap: 8px; padding: 10px; }
   .player-tabs button {
@@ -288,7 +289,7 @@
       </article>
 
       <article class="case">
-        <div class="player" data-switch>
+        <div class="player player-static" data-switch>
           <div class="stage"><video controls preload="none" poster="assets/poster-film.jpg" src="assets/mr-kato-film.mp4" aria-label="Mr. Kato video"></video><button type="button" class="sound-btn" hidden>Play with sound</button></div>
           <div class="player-tabs" role="group" aria-label="Choose a video">
             <button type="button" aria-pressed="true" data-src="assets/mr-kato-film.mp4" data-poster="assets/poster-film.jpg">Short film (1:30)</button>
@@ -668,6 +669,7 @@
     runBtn.addEventListener('click', function () {
       if (turnIndex === 0) clearAll();
       elEmpty.hidden = true;
+      elNaiveVerdict.textContent = ''; elFixedVerdict.textContent = '';
       runBtn.disabled = true;
       runTurn(turns[turnIndex], function () {
         turnIndex += 1;
