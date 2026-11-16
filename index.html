@@ -167,6 +167,32 @@
   /* Nav: current section */
   .site-nav a[aria-current="true"] { color: var(--pine); box-shadow: 0 2px 0 var(--pine); }
 
+  /* Request path for the Kato Report Agent */
+  .path { grid-column: 1 / -1; background: var(--sand); border: 1px solid var(--line); border-radius: 14px; padding: 32px; }
+  .path h4 { margin: 0; font-size: 22px; letter-spacing: -0.02em; font-weight: 600; }
+  .path-intro { margin-top: 8px; max-width: 40em; font-size: 16px; color: var(--muted); }
+  .path-pick { margin-top: 20px; display: flex; flex-wrap: wrap; gap: 8px; }
+  .path-pick button {
+    font: inherit; font-size: 15px; font-weight: 600; cursor: pointer;
+    padding: 9px 16px; border-radius: 999px; border: 1px solid var(--ink); background: transparent; color: var(--ink);
+  }
+  .path-pick button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+  .flow { margin-top: 28px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 28px; }
+  .node {
+    position: relative; background: var(--paper); border: 1.5px solid var(--line); border-radius: 12px;
+    padding: 14px 14px 12px; min-height: 118px; transition: border-color 0.25s, background-color 0.25s, opacity 0.25s;
+  }
+  .node:not(:last-child)::after { content: ""; position: absolute; top: 50%; left: 100%; width: 28px; height: 1.5px; background: #CFC3AB; margin-left: 1.5px; }
+  .node b { display: block; font-size: 15px; font-weight: 600; line-height: 1.3; }
+  .node span { display: block; margin-top: 4px; font-size: 13px; line-height: 1.4; color: var(--muted); }
+  .node em { display: block; margin-top: 8px; font-style: normal; font-size: 13px; font-weight: 600; color: var(--pine); min-height: 1.4em; }
+  .node[data-state="active"] { border-color: var(--pine); background: #fff; box-shadow: 0 0 0 4px rgba(46, 90, 76, 0.12); }
+  .node[data-state="done"] { border-color: var(--pine); }
+  .node[data-state="skipped"] { opacity: 0.45; border-style: dashed; }
+  .node[data-state="skipped"] em, .node[data-state="miss"] em { color: var(--muted); }
+  .node[data-state="miss"] { border-color: #BFB198; }
+  .path-caption { margin-top: 22px; min-height: 3.2em; font-size: 17px; max-width: 44em; }
+
   /* Message pipeline replay */
   .replay { grid-column: 1 / -1; background: var(--sand); border: 1px solid var(--line); border-radius: 14px; padding: 32px; }
   .replay-head { display: flex; gap: 32px; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; }
@@ -210,7 +236,10 @@
     .section { padding: 64px 0; }
     .case { margin-top: 44px; gap: 24px; }
     .player { position: static; }
-    .replay { padding: 20px; }
+    .replay, .path { padding: 20px; }
+    .flow { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+    .node { min-height: 0; }
+    .node:not(:last-child)::after { top: 100%; left: 28px; width: 1.5px; height: 14px; margin: 1.5px 0 0; }
     .replay-grid { grid-template-columns: minmax(0, 1fr); }
     .lane { min-height: 0; }
     .verdict { margin-top: 12px; }
@@ -266,7 +295,7 @@
       <p class="section-intro">Three projects that shipped to real users, each with a demo you can watch.</p>
 
       <article class="case">
-        <div class="player">
+        <div class="player player-static">
           <div class="stage"><video controls preload="none" poster="assets/poster-agent.jpg" src="assets/kato-report-agent.mp4" aria-label="Kato Report Agent demo"></video><button type="button" class="sound-btn" hidden>Play with sound</button></div>
           <p class="player-note">Demo: asking the agent about student engagement data (1:03)</p>
         </div>
@@ -285,6 +314,22 @@
           <ul class="tags">
             <li>Python</li><li>Azure Functions</li><li>RAG</li><li>MCP</li><li>Azure AI Search</li><li>React</li>
           </ul>
+        </div>
+        <div class="path" id="path">
+          <h4>How a question gets answered</h4>
+          <p class="path-intro">The agent tries its tools before it searches documents. Pick a kind of question to follow it through.</p>
+          <div class="path-pick" role="group" aria-label="Kind of question">
+            <button type="button" aria-pressed="false" data-path="tools">A question the tools can answer</button>
+            <button type="button" aria-pressed="false" data-path="docs">A question that needs the documents</button>
+          </div>
+          <ol class="flow">
+            <li class="node" data-node="ask"><b>Analyst's question</b><span>Typed into the React chat interface</span><em></em></li>
+            <li class="node" data-node="agent"><b>Agent</b><span>Decides where to look, tools first</span><em></em></li>
+            <li class="node" data-node="mcp"><b>MCP tools</b><span>Python functions that compute on the data and draw charts</span><em></em></li>
+            <li class="node" data-node="rag"><b>Document search</b><span>Keyword and vector search over the indexed documents</span><em></em></li>
+            <li class="node" data-node="answer"><b>Answer</b><span>Text, tables or charts back to the analyst</span><em></em></li>
+          </ol>
+          <p class="path-caption" id="path-caption" aria-live="polite"></p>
         </div>
       </article>
 
@@ -583,6 +628,58 @@
       });
     }, { rootMargin: '-45% 0px -50% 0px' });
     Object.keys(owner).forEach(function (id) { var el = document.getElementById(id); if (el) spy.observe(el); });
+  }
+
+  // Request path for the Kato Report Agent.
+  var pathEl = document.getElementById('path');
+  if (pathEl) {
+    var nodes = {};
+    pathEl.querySelectorAll('.node').forEach(function (n) { nodes[n.dataset.node] = n; });
+    var caption = document.getElementById('path-caption');
+    var pickers = pathEl.querySelectorAll('.path-pick button');
+    var paths = {
+      tools: [
+        { node: 'ask', text: 'An analyst asks for a figure or a chart.' },
+        { node: 'agent', text: 'The agent checks its tools first.' },
+        { node: 'mcp', note: 'Answer found', text: 'A Python tool has a definite answer. It runs the calculation and can draw the chart on demand.' },
+        { node: 'rag', state: 'skipped', note: 'Skipped', text: 'No document search is needed for this one.' },
+        { node: 'answer', text: 'The result goes straight back to the analyst.' }
+      ],
+      docs: [
+        { node: 'ask', text: 'An analyst asks about something written in the project documents.' },
+        { node: 'agent', text: 'The agent checks its tools first.' },
+        { node: 'mcp', state: 'miss', note: 'No answer here', text: 'No tool has a definite answer, so the agent falls back.' },
+        { node: 'rag', note: 'Passages found', text: 'It searches the document index by keyword and by meaning, and pulls the matching passages.' },
+        { node: 'answer', text: 'The answer is written from those passages, so it stays grounded in the source documents.' },
+        { node: 'mcp', note: 'Saved for next time', text: 'A high-confidence answer is cached with the tools, which makes the same question cheaper to answer next time.' }
+      ]
+    };
+    var timer = null;
+    var pace = reduced ? 900 : 1500;
+
+    function resetPath() {
+      Object.keys(nodes).forEach(function (k) { nodes[k].removeAttribute('data-state'); nodes[k].querySelector('em').textContent = ''; });
+    }
+    function playPath(name) {
+      clearTimeout(timer);
+      resetPath();
+      pickers.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.path === name ? 'true' : 'false'); });
+      var steps = paths[name], i = 0, last = null;
+      (function next() {
+        if (last && last.getAttribute('data-state') === 'active') last.setAttribute('data-state', 'done');
+        if (i >= steps.length) return;
+        var step = steps[i++];
+        var el = nodes[step.node];
+        el.setAttribute('data-state', step.state || 'active');
+        el.querySelector('em').textContent = step.note || '';
+        caption.textContent = step.text;
+        last = el;
+        if (i < steps.length) timer = setTimeout(next, pace);
+        else timer = setTimeout(function () { if (last.getAttribute('data-state') === 'active') last.setAttribute('data-state', 'done'); }, pace);
+      })();
+    }
+    pickers.forEach(function (b) { b.addEventListener('click', function () { playPath(b.dataset.path); }); });
+    caption.textContent = 'Pick a question to start.';
   }
 
   // Message pipeline replay.
